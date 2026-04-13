@@ -1,0 +1,23 @@
+Como parte de su proceso de aprendizaje en el desarrollo de aplicaciones del lado
+del servidor, se les solicita utilizar el último trabajo realizado: el Sistema de
+Gestión de Empresa de Desarrollo.
+A partir de este proyecto, deberán crear la estructura de una pequeña API,
+aplicando los principios de Programación Orientada a Objetos (POO).
+Es importante tomar en cuenta que este trabajo no requiere que el sistema esté
+completamente funcional, ya que aún no se ha abordado el tema de bases de
+datos en el curso. El objetivo principal de esta actividad es que los estudiantes
+definan la estructura del proyecto, creen las clases necesarias y establezcan las
+configuraciones básicas para el desarrollo de la API.
+De esta forma, el proyecto quedará preparado para ser ampliado y completado en
+futuras lecciones, cuando se integren los conocimientos relacionados con el
+manejo de bases de datos.
+Adicionalmente, de acuerdo con su investigación, deberán crear:
+1. Modelos utilizando clases, aplicando los principios de Programación
+Orientada a Objetos.
+2. Controladores, estructurados para gestionar la lógica del sistema y quedar
+preparados para realizar consultas a la base de datos en el futuro.
+3. Rutas (routes) que permitan definir los endpoints de la API y la
+comunicación entre el cliente y el servidor.
+El objetivo es que el proyecto quede estructurado correctamente a nivel de
+arquitectura, aunque las consultas a la base de datos aún no se implementen
+completamente.

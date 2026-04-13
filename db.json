@@ -1,0 +1,32 @@
+{
+    "Empresa": [
+        {
+            "nombre": "Empresa Ejemplo",
+            "departamentos": [
+                {
+                    "nombre": "Ventas",
+                    "empleados": [
+                        {
+                            "nombre": "Juan Perez",
+                            "puesto": "Vendedor"
+                        },
+                        {
+                            "nombre": "Maria Lopez",
+                            "puesto": "Asistente de Ventas"
+                        }
+                    ]
+                },
+                {
+                    "nombre": "Recursos Humanos",
+                    "empleados": [
+                        {
+                            "nombre": "Carlos Gomez",
+                            "puesto": "Gerente de RRHH"
+                        }
+                    ]
+                }
+            ],
+            "id": 1
+        }
+    ]
+}
