@@ -42,16 +42,14 @@ async function postEmpresa(nombre, departamentos) {
     }
 }
 
-async function updateEmpresa(nombre, departamentos, id) {
+async function updateEmpresa(id, updatedData) {
     try {
-        const Data = { nombre, departamentos };
-
         const response = await fetch(`http://localhost:3005/Empresa/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(Data)
+            body: JSON.stringify(updatedData)
         });
 
         if (!response.ok) {
@@ -65,9 +63,44 @@ async function updateEmpresa(nombre, departamentos, id) {
     }
 }
 
+async function agregarDepartamento(idEmpresa, nuevoDepartamento) {
+    const empresas = await getEmpresa();
+    const empresa = empresas.find(e => e.id == idEmpresa);
+    if (!empresa) throw new Error("Empresa no encontrada");
+
+    empresa.departamentos.push(nuevoDepartamento);
+    return await updateEmpresa(idEmpresa, empresa);
+}
+
+async function agregarEmpleado(idEmpresa, nombreDepartamento, nuevoEmpleado) {
+    const empresas = await getEmpresa();
+    const empresa = empresas.find(e => e.id == idEmpresa);
+    if (!empresa) throw new Error("Empresa no encontrada");
+
+    const depto = empresa.departamentos.find(d => d.nombre === nombreDepartamento);
+    if (!depto) throw new Error("Departamento no encontrado");
+
+    depto.empleados.push(nuevoEmpleado);
+    return await updateEmpresa(idEmpresa, empresa);
+}
+
+async function eliminarEmpleado(idEmpresa, nombreDepartamento, nombreEmpleado) {
+    const empresas = await getEmpresa();
+    const empresa = empresas.find(e => e.id == idEmpresa);
+    if (!empresa) throw new Error("Empresa no encontrada");
+
+    const depto = empresa.departamentos.find(d => d.nombre === nombreDepartamento);
+    if (!depto) throw new Error("Departamento no encontrado");
+
+    depto.empleados = depto.empleados.filter(emp => emp.nombre !== nombreEmpleado);
+    return await updateEmpresa(idEmpresa, empresa);
+}
 
 module.exports = {
     getEmpresa,
     postEmpresa,
-    updateEmpresa
+    updateEmpresa,
+    agregarDepartamento,
+    agregarEmpleado,
+    eliminarEmpleado
 };

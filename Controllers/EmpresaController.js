@@ -3,8 +3,6 @@ const Departamento = require('../Models/Departamento');
 const Empleado = require('../Models/Empleado');
 const ServiceEmpresa = require('../Services/ServicesEmpresa');
 
-let miEmpresaBase = new Empresa('Cotinis S.A.');
-
 const EmpresaController = {
     agregardepartamentos: async (req, res) => {
         const { nombre, departamentos } = req.body;
@@ -31,68 +29,34 @@ const EmpresaController = {
     },
 
     agregarDepartamento: async (req, res) => {
+        const { idEmpresa, nombreDepartamento } = req.body;
+        const nuevoDepto = new Departamento(nombreDepartamento);
         try {
-            const empresas = await ServiceEmpresa.getEmpresa();
-            if (empresas.length === 0) return res.status(404).json({ error: "Empresa no encontrada" });
-            
-            const empresa = empresas[0];
-            const nombreDepto = req.body.nombre;
-            let nuevoDepto = new Departamento(nombreDepto);
-            
-            empresa.departamentos.push(nuevoDepto);
-            const updated = await ServiceEmpresa.updateEmpresa(empresa.nombre, empresa.departamentos, empresa.id);
-            
-            res.status(201).json({ mensaje: "Departamento creado", departamento: nuevoDepto, data: updated });
+            const result = await ServiceEmpresa.agregarDepartamento(idEmpresa, nuevoDepto);
+            res.status(200).json({ message: "Departamento agregado con éxito", data: result });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Error al agregar departamento", error: error.message });
         }
     },
 
     agregarEmpleado: async (req, res) => {
+        const { idEmpresa, nombreDepartamento, nombreEmpleado, puestoEmpleado } = req.body;
+        const nuevoEmpleado = new Empleado(nombreEmpleado, puestoEmpleado);
         try {
-            const { nombreDepto, nombre, puesto } = req.body;
-            const empresas = await ServiceEmpresa.getEmpresa();
-            if (empresas.length === 0) return res.status(404).json({ error: "Empresa no encontrada" });
-            
-            const empresa = empresas[0];
-            const depto = empresa.departamentos.find(d => d.nombre === nombreDepto);
-            if (!depto) {
-                return res.status(404).json({ error: "Departamento no encontrado" });
-            }
-            
-            const nuevoEmpleado = new Empleado(nombre, puesto);
-            depto.empleados.push(nuevoEmpleado);
-            
-            const updated = await ServiceEmpresa.updateEmpresa(empresa.nombre, empresa.departamentos, empresa.id);
-            res.status(201).json({ mensaje: "Empleado agregado", empleado: nuevoEmpleado, data: updated });
+            const result = await ServiceEmpresa.agregarEmpleado(idEmpresa, nombreDepartamento, nuevoEmpleado);
+            res.status(200).json({ message: "Empleado agregado con éxito", data: result });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Error al agregar empleado", error: error.message });
         }
     },
 
     eliminarEmpleado: async (req, res) => {
+        const { idEmpresa, nombreDepartamento, nombreEmpleado } = req.body;
         try {
-            const { nombreDepto, nombre } = req.body;
-            const empresas = await ServiceEmpresa.getEmpresa();
-            if (empresas.length === 0) return res.status(404).json({ error: "Empresa no encontrada" });
-            
-            const empresa = empresas[0];
-            const depto = empresa.departamentos.find(d => d.nombre === nombreDepto);
-            if (!depto) {
-                return res.status(404).json({ error: "Departamento no encontrado" });
-            }
-            
-            const indexEmpleado = depto.empleados.findIndex(e => e.nombre === nombre);
-            if (indexEmpleado === -1) {
-                return res.status(404).json({ error: "Empleado no encontrado" });
-            }
-            
-            const empleadoEliminado = depto.empleados.splice(indexEmpleado, 1)[0];
-            await ServiceEmpresa.updateEmpresa(empresa.nombre, empresa.departamentos, empresa.id);
-            
-            res.status(200).json({ mensaje: "Empleado eliminado", empleado: empleadoEliminado });
+            const result = await ServiceEmpresa.eliminarEmpleado(idEmpresa, nombreDepartamento, nombreEmpleado);
+            res.status(200).json({ message: "Empleado eliminado con éxito", data: result });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Error al eliminar empleado", error: error.message });
         }
     }
 };
